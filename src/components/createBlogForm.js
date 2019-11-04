@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import blogsService from "../services/blogs";
+import React from "react";
+// import blogsService from "../services/blogs";
 
 const CreateBlogForm = ({ handleAuthorChange, handleSubmit, handleTitleChange, handleUrlChange, title, url, author }) => {
 //   const [title, setTitle] = useState("");

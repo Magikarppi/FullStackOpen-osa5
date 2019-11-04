@@ -6,6 +6,7 @@ import NotificationError from "./components/NotificationError";
 import NotificationSuccess from "./components/NotificationSuccess";
 import Blog from "./components/Blog";
 import CreateBlogForm from "./components/createBlogForm";
+import Togglable from "./components/Toggleable";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -15,8 +16,11 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  // const [createBlogVisible, setCreateBlogVisible] = useState('');
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const createBlogFormRef = React.createRef();
 
   // start backend with npm run watch
 
@@ -45,7 +49,7 @@ const App = () => {
         const blogsByUser = initialBlogs.filter(blog => {
           return blog.user.username === user.username;
         });
-        setBlogs(blogsByUser);
+        setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
       };
       fetchBlogs();
     }
@@ -57,6 +61,22 @@ const App = () => {
   //       })
   //     setBlogs(blogsByUser)
   // }, [user])
+
+  // const createBlogForm = () => {
+  //   // const hideWhenVisible = { display: createBlogVisible ? 'none' : ''}
+  //   // const showWhenVisible = { display: createBlogVisible ? '' : 'none'}
+
+  //         <CreateBlogForm
+  //       handleAuthorChange={handleAuthorChange}
+  //       handleTitleChange={handleTitleChange}
+  //       handleUrlChange={handleUrlChange}
+  //       handleSubmit={handleSubmit}
+  //       title={title}
+  //       author={author}
+  //       url={url}
+  //       />
+
+  // }
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -99,7 +119,7 @@ const App = () => {
             console.log("user in filter", newUser);
             return blog.user.username === newUser.username;
           });
-          setBlogs(blogsByUser);
+          setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
         };
         fetchBlogs();
         console.log("blogs after setblogs in handlelogin", blogs);
@@ -118,7 +138,7 @@ const App = () => {
 
   const handleLogOut = () => {
     window.localStorage.clear();
-    setBlogs([])
+    setBlogs([]);
     setUser(null);
   };
 
@@ -136,6 +156,7 @@ const App = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
+    createBlogFormRef.current.toggleVisibility()
     try {
       const newBlog = {
         title: title,
@@ -157,8 +178,8 @@ const App = () => {
       //     console.log('user.username', user.username)
       //       return blog.user.username === user.username
       //     })
-      const vittuBlogs = [...blogs, createdBlog];
-      setBlogs(vittuBlogs);
+      const updatedBlogs = [...blogs, createdBlog];
+      setBlogs(updatedBlogs);
       console.log("blogs after add", blogs);
       setSuccessMessage(`${createdBlog.title} was added!`);
       setAuthor("");
@@ -173,6 +194,37 @@ const App = () => {
         setErrorMessage(null);
       }, 4000);
     }
+  };
+
+  const handleUpdate = async blog => {
+    console.log("blog in handleepdate", blog);
+    const updateBlog = {
+      ...blog,
+      likes: blog.likes + 1
+    };
+
+    try {
+      const likedBlog = await blogsService.update(updateBlog);
+      const filteredBlogs = blogs.filter(blog => blog.id !== likedBlog.id);
+      const updatedBlogs = [...filteredBlogs, likedBlog];
+      console.log("filteredBlogs", filteredBlogs);
+      console.log("likedblog", likedBlog);
+      setBlogs(updatedBlogs.sort((a, b) => b.likes - a.likes));
+      console.log("blogs after set", blogs);
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
+
+  const handleRemove = async deleteBlog => {
+    if (window.confirm(`Do you want to delete blog: ${deleteBlog.title} by ${deleteBlog.author}?`)) {
+    try {
+      await blogsService.remove(deleteBlog);
+      setBlogs(blogs.filter(blog => blog.id !== deleteBlog.id))
+    } catch (exception) {
+      console.log(exception);
+    }
+  }
   };
 
   if (user === null) {
@@ -213,17 +265,24 @@ const App = () => {
       <h4>{user.name} logged in</h4>
       <button onClick={handleLogOut}>Log Out</button>
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleUpdate={handleUpdate}
+          handleRemove={handleRemove}
+        />
       ))}
-      <CreateBlogForm
-        handleAuthorChange={handleAuthorChange}
-        handleTitleChange={handleTitleChange}
-        handleUrlChange={handleUrlChange}
-        handleSubmit={handleSubmit}
-        title={title}
-        author={author}
-        url={url}
-      />
+      <Togglable buttonLabel="new blog" ref={createBlogFormRef}>
+        <CreateBlogForm
+          handleAuthorChange={handleAuthorChange}
+          handleTitleChange={handleTitleChange}
+          handleUrlChange={handleUrlChange}
+          handleSubmit={handleSubmit}
+          title={title}
+          author={author}
+          url={url}
+        />
+      </Togglable>
     </div>
   );
 };
