@@ -24,15 +24,15 @@ const App = () => {
 
   // start backend with npm run watch
 
-  // useEffect(() => {
-  //   const fetchBlogs = async () => {
-  //     console.log('fetchblogs runs')
-  //       const blogs = await blogsService.getAll()
-  //       console.log('blogs after getAll', blogs)
-  //       setBlogs(blogs)
-  //   }
-  //   fetchBlogs()
-  // }, [])
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      console.log('fetchblogs runs')
+        const blogs = await blogsService.getAll()
+        console.log('blogs after getAll', blogs)
+        setBlogs(blogs.sort((a, b) => b.likes - a.likes));
+    }
+    fetchBlogs()
+  }, [])
 
   useEffect(() => {
     console.log("loggeduser", window.localStorage.getItem("loggedBlogAppUser"));
@@ -42,16 +42,16 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       blogsService.setToken(user.token);
-      const fetchBlogs = async () => {
-        console.log("fetchblogs runs");
-        const initialBlogs = await blogsService.getAll();
-        console.log("blogs after getAll", initialBlogs);
-        const blogsByUser = initialBlogs.filter(blog => {
-          return blog.user.username === user.username;
-        });
-        setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
-      };
-      fetchBlogs();
+      // const fetchBlogs = async () => {
+      //   console.log("fetchblogs runs");
+      //   const initialBlogs = await blogsService.getAll();
+      //   console.log("blogs after getAll", initialBlogs);
+      //   const blogsByUser = initialBlogs.filter(blog => {
+      //     return blog.user.username === user.username;
+      //   });
+      //   setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
+      // };
+      // fetchBlogs();
     }
   }, []);
 
@@ -111,17 +111,17 @@ const App = () => {
         blogsService.setToken(newUser.token);
         setUser(newUser);
         console.log("USER after setUser in handlelogin");
-        const fetchBlogs = async () => {
-          console.log("fetchblogs runs");
-          const initialBlogs = await blogsService.getAll();
-          console.log("blogs after getAll", initialBlogs);
-          const blogsByUser = initialBlogs.filter(blog => {
-            console.log("user in filter", newUser);
-            return blog.user.username === newUser.username;
-          });
-          setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
-        };
-        fetchBlogs();
+        // const fetchBlogs = async () => {
+        //   console.log("fetchblogs runs");
+        //   const initialBlogs = await blogsService.getAll();
+        //   console.log("blogs after getAll", initialBlogs);
+        //   const blogsByUser = initialBlogs.filter(blog => {
+        //     console.log("user in filter", newUser);
+        //     return blog.user.username === newUser.username;
+        //   });
+        //   setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
+        // };
+        // fetchBlogs();
         console.log("blogs after setblogs in handlelogin", blogs);
         setUsername("");
         setPassword("");
@@ -138,7 +138,7 @@ const App = () => {
 
   const handleLogOut = () => {
     window.localStorage.clear();
-    setBlogs([]);
+    // setBlogs([]);
     setUser(null);
   };
 
@@ -179,7 +179,7 @@ const App = () => {
       //       return blog.user.username === user.username
       //     })
       const updatedBlogs = [...blogs, createdBlog];
-      setBlogs(updatedBlogs);
+      setBlogs(updatedBlogs.sort((a, b) => b.likes - a.likes));
       console.log("blogs after add", blogs);
       setSuccessMessage(`${createdBlog.title} was added!`);
       setAuthor("");
@@ -264,14 +264,6 @@ const App = () => {
       <NotificationSuccess successMessage={successMessage} />
       <h4>{user.name} logged in</h4>
       <button onClick={handleLogOut}>Log Out</button>
-      {blogs.map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleUpdate={handleUpdate}
-          handleRemove={handleRemove}
-        />
-      ))}
       <Togglable buttonLabel="new blog" ref={createBlogFormRef}>
         <CreateBlogForm
           handleAuthorChange={handleAuthorChange}
@@ -283,6 +275,15 @@ const App = () => {
           url={url}
         />
       </Togglable>
+      {blogs.map(blog => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleUpdate={handleUpdate}
+          handleRemove={handleRemove}
+          user={user}
+        />
+      ))}
     </div>
   );
 };
