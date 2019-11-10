@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types'
 // import blogsService from "../services/blogs";
 
 const CreateBlogForm = ({ handleAuthorChange, handleSubmit, handleTitleChange, handleUrlChange, title, url, author }) => {
@@ -6,24 +7,24 @@ const CreateBlogForm = ({ handleAuthorChange, handleSubmit, handleTitleChange, h
 //   const [author, setAuthor] = useState("");
 //   const [url, setUrl] = useState("");
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//         const newBlog = {
-//           title: title,
-//           author: author,
-//           url: url
-//         };
-//         console.log('newBlog in handlesubmit', newBlog)
-//         const createdBlog = await blogsService.create(newBlog);
-//         setBlogs(blogs.concat(createdBlog))
-//     } catch (exception) {
-//         setErrorMessage('Blog creation failed')
-//       setTimeout(() => {
-//         setErrorMessage(null)
-//       }, 4000)
-//     }
-//   };
+  //   const handleSubmit = async (event) => {
+  //     event.preventDefault();
+  //     try {
+  //         const newBlog = {
+  //           title: title,
+  //           author: author,
+  //           url: url
+  //         };
+  //         console.log('newBlog in handlesubmit', newBlog)
+  //         const createdBlog = await blogsService.create(newBlog);
+  //         setBlogs(blogs.concat(createdBlog))
+  //     } catch (exception) {
+  //         setErrorMessage('Blog creation failed')
+  //       setTimeout(() => {
+  //         setErrorMessage(null)
+  //       }, 4000)
+  //     }
+  //   };
 
   return (
     <div>
@@ -60,5 +61,15 @@ const CreateBlogForm = ({ handleAuthorChange, handleSubmit, handleTitleChange, h
     </div>
   );
 };
+
+CreateBlogForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleAuthorChange: PropTypes.func.isRequired,
+  handleTitleChange: PropTypes.func.isRequired,
+  handleUrlChange: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired
+}
 
 export default CreateBlogForm;

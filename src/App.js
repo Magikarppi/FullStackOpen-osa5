@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import loginService from "./services/login";
-import blogsService from "./services/blogs";
+import React, { useState, useEffect } from 'react';
+import loginService from './services/login';
+import blogsService from './services/blogs';
 // import Blogs from './components/Blogs'
-import NotificationError from "./components/NotificationError";
-import NotificationSuccess from "./components/NotificationSuccess";
-import Blog from "./components/Blog";
-import CreateBlogForm from "./components/createBlogForm";
-import Togglable from "./components/Toggleable";
+import NotificationError from './components/NotificationError';
+import NotificationSuccess from './components/NotificationSuccess';
+import Blog from './components/Blog';
+import CreateBlogForm from './components/createBlogForm';
+import Togglable from './components/Toggleable';
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
   // const [createBlogVisible, setCreateBlogVisible] = useState('');
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const createBlogFormRef = React.createRef();
 
@@ -27,18 +27,18 @@ const App = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       console.log('fetchblogs runs')
-        const blogs = await blogsService.getAll()
-        console.log('blogs after getAll', blogs)
-        setBlogs(blogs.sort((a, b) => b.likes - a.likes));
+      const blogs = await blogsService.getAll()
+      console.log('blogs after getAll', blogs)
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes));
     }
     fetchBlogs()
   }, [])
 
   useEffect(() => {
-    console.log("loggeduser", window.localStorage.getItem("loggedBlogAppUser"));
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
+    console.log('loggeduser', window.localStorage.getItem('loggedBlogAppUser'));
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
     if (loggedUserJSON) {
-      console.log("loggeduser in if block:", loggedUserJSON);
+      console.log('loggeduser in if block:', loggedUserJSON);
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       blogsService.setToken(user.token);
@@ -88,29 +88,29 @@ const App = () => {
           password
         });
       } catch (exception) {
-        console.log("exception in handlelogin", exception);
+        console.log('exception in handlelogin', exception);
       }
-      console.log("newuser in handlelogin", newUser.toString().toUpperCase());
+      console.log('newuser in handlelogin', newUser.toString().toUpperCase());
       if (
         newUser.toString().toUpperCase() ===
-        "ERROR: REQUEST FAILED WITH STATUS CODE 401"
+        'ERROR: REQUEST FAILED WITH STATUS CODE 401'
       ) {
-        console.log("intothe if block");
-        setErrorMessage("Wrong username or password");
+        console.log('intothe if block');
+        setErrorMessage('Wrong username or password');
         setTimeout(() => {
           setErrorMessage(null);
         }, 4000);
       }
       if (newUser.username) {
         window.localStorage.setItem(
-          "loggedBlogAppUser",
+          'loggedBlogAppUser',
           JSON.stringify(newUser)
         );
-        console.log("code continues after (if newuser.username");
-        console.log("newuser.username", newUser.username);
+        console.log('code continues after (if newuser.username');
+        console.log('newuser.username', newUser.username);
         blogsService.setToken(newUser.token);
         setUser(newUser);
-        console.log("USER after setUser in handlelogin");
+        console.log('USER after setUser in handlelogin');
         // const fetchBlogs = async () => {
         //   console.log("fetchblogs runs");
         //   const initialBlogs = await blogsService.getAll();
@@ -122,14 +122,14 @@ const App = () => {
         //   setBlogs(blogsByUser.sort((a, b) => b.likes - a.likes));
         // };
         // fetchBlogs();
-        console.log("blogs after setblogs in handlelogin", blogs);
-        setUsername("");
-        setPassword("");
+        console.log('blogs after setblogs in handlelogin', blogs);
+        setUsername('');
+        setPassword('');
       }
 
-      console.log("handlelogin has run");
+      console.log('handlelogin has run');
     } catch (exception) {
-      setErrorMessage("Wrong username or password");
+      setErrorMessage('Wrong username or password');
       setTimeout(() => {
         setErrorMessage(null);
       }, 4000);
@@ -165,12 +165,12 @@ const App = () => {
       };
 
       let createdBlog = null;
-      console.log("newBlog in handlesubmit", newBlog);
+      console.log('newBlog in handlesubmit', newBlog);
       try {
         createdBlog = await blogsService.create(newBlog);
-        console.log("createdBlog", createdBlog);
+        console.log('createdBlog', createdBlog);
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error);
       }
       // if (createdBlog) {
       //   const blogsByUser = blogs.filter(blog => {
@@ -180,16 +180,16 @@ const App = () => {
       //     })
       const updatedBlogs = [...blogs, createdBlog];
       setBlogs(updatedBlogs.sort((a, b) => b.likes - a.likes));
-      console.log("blogs after add", blogs);
+      console.log('blogs after add', blogs);
       setSuccessMessage(`${createdBlog.title} was added!`);
-      setAuthor("");
-      setUrl("");
-      setTitle("");
+      setAuthor('');
+      setUrl('');
+      setTitle('');
       setTimeout(() => {
         setSuccessMessage(null);
       }, 4000);
     } catch (exception) {
-      setErrorMessage("Blog creation failed");
+      setErrorMessage('Blog creation failed');
       setTimeout(() => {
         setErrorMessage(null);
       }, 4000);
@@ -197,7 +197,7 @@ const App = () => {
   };
 
   const handleUpdate = async blog => {
-    console.log("blog in handleepdate", blog);
+    console.log('blog in handleepdate', blog);
     const updateBlog = {
       ...blog,
       likes: blog.likes + 1
@@ -207,10 +207,10 @@ const App = () => {
       const likedBlog = await blogsService.update(updateBlog);
       const filteredBlogs = blogs.filter(blog => blog.id !== likedBlog.id);
       const updatedBlogs = [...filteredBlogs, likedBlog];
-      console.log("filteredBlogs", filteredBlogs);
-      console.log("likedblog", likedBlog);
+      console.log('filteredBlogs', filteredBlogs);
+      console.log('likedblog', likedBlog);
       setBlogs(updatedBlogs.sort((a, b) => b.likes - a.likes));
-      console.log("blogs after set", blogs);
+      console.log('blogs after set', blogs);
     } catch (exception) {
       console.log(exception);
     }
@@ -218,18 +218,18 @@ const App = () => {
 
   const handleRemove = async deleteBlog => {
     if (window.confirm(`Do you want to delete blog: ${deleteBlog.title} by ${deleteBlog.author}?`)) {
-    try {
-      await blogsService.remove(deleteBlog);
-      setBlogs(blogs.filter(blog => blog.id !== deleteBlog.id))
-    } catch (exception) {
-      console.log(exception);
+      try {
+        await blogsService.remove(deleteBlog);
+        setBlogs(blogs.filter(blog => blog.id !== deleteBlog.id))
+      } catch (exception) {
+        console.log(exception);
+      }
     }
-  }
   };
 
   if (user === null) {
     return (
-      <div>
+      <div className='loginFormView'>
         <h2>Log in to application</h2>
         <NotificationError errorMessage={errorMessage} />
         <form onSubmit={handleLogin}>
@@ -258,7 +258,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='loggedInView'>
       <h2>Blogs</h2>
       <NotificationError errorMessage={errorMessage} />
       <NotificationSuccess successMessage={successMessage} />

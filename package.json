@@ -13,7 +13,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "eslint ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,8 +32,11 @@
     ]
   },
   "devDependencies": {
-    "set-value": ">=2.0.1",
-    "mixin-deep": ">=1.3.2"
+    "@testing-library/jest-dom": "^4.2.3",
+    "@testing-library/react": "^9.3.2",
+    "eslint-plugin-jest": "^23.0.2",
+    "mixin-deep": ">=1.3.2",
+    "set-value": ">=2.0.1"
   },
   "proxy": "http://localhost:3003"
 }

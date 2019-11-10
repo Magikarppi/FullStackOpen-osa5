@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 const Blog = ({ blog, handleUpdate, handleRemove, user }) => {
-   const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(false)
 
-   console.log('user in Blog', user)
-   console.log('blog in BLog', blog)
+  console.log('user in Blog', user)
+  console.log('blog in BLog', blog)
 
   const blogStyle = {
     paddingTop: 10,
@@ -17,18 +17,18 @@ const Blog = ({ blog, handleUpdate, handleRemove, user }) => {
 
   if (!showMore) {
     return (
-    <div style={blogStyle}>
-      <div onClick={() => setShowMore(true)}>
-      {blog.title} - {blog.author}
+      <div style={blogStyle}>
+        <div className='basicView' data-testid='divBasicView' onClick={() => setShowMore(true)}>
+          {blog.title} - {blog.author}
+        </div>
       </div>
-    </div>
     )
   }
 
   if (blog.user.id === user.id || blog.user === user.id) {
     return (
       <div style={blogStyle}>
-        <div onClick={() => setShowMore(false)}>
+        <div className='expandedView' data-testid='divExpandedView' onClick={() => setShowMore(false)}>
           <p>
             {blog.title} - {blog.author}
           </p>
@@ -43,7 +43,7 @@ const Blog = ({ blog, handleUpdate, handleRemove, user }) => {
   } else {
     return (
       <div style={blogStyle}>
-        <div onClick={() => setShowMore(false)}>
+        <div className='expandedView' data-testid='divExpandedView' onClick={() => setShowMore(false)}>
           <p>
             {blog.title} - {blog.author}
           </p>
@@ -65,7 +65,7 @@ const Blog = ({ blog, handleUpdate, handleRemove, user }) => {
   //     <p>Likes: {blog.likes}</p>
   //     <button onClick={() => handleUpdate(blog)}>Like</button>
   //     <p>added by {user.name}</p>
-  //     {(blog.user.username === user.username) 
+  //     {(blog.user.username === user.username)
   //     ? <button onClick={() => handleRemove(blog)}>Delete</button>
   //     : null
   //     }
