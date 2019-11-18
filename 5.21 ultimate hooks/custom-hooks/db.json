@@ -1,0 +1,57 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are awesome!",
+      "id": 1
+    },
+    {
+      "content": "best feature ever <3",
+      "id": 2
+    },
+    {
+      "content": "testnootti",
+      "id": 3
+    },
+    {
+      "content": "muumi 3>",
+      "id": 4
+    },
+    {
+      "content": "crashing down",
+      "id": 5
+    },
+    {
+      "content": "coding is for",
+      "id": 6
+    },
+    {
+      "content": "nerds aka successful ppl",
+      "id": 7
+    },
+    {
+      "content": "baseurl is a dependency now",
+      "id": 8
+    },
+    {
+      "content": "now reset works",
+      "id": 9
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "bruce dickinson",
+      "number": "953-5353-535",
+      "id": 2
+    },
+    {
+      "name": "sami huuskonen",
+      "number": "505-35877853",
+      "id": 3
+    }
+  ]
+}
