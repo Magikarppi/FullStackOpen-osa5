@@ -37,7 +37,7 @@
     "eslint-plugin-jest": "^23.0.2",
     "eslint-plugin-react-hooks": "^2.2.0",
     "mixin-deep": ">=1.3.2",
-    "set-value": ">=2.0.1"
+    "set-value": ">=4.0.1"
   },
   "proxy": "http://localhost:3003"
 }
